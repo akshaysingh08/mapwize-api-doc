@@ -1,0 +1,1487 @@
+# CTXServer API documentation
+swagger: '2.0'
+
+info:
+  version: "1.0.0"
+  title: Mapwize API
+host: www.mapwize.io
+basePath: /api/v1
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+
+# API routes
+paths:
+
+  /access:
+    get:
+      description: |
+        Gets all access of the logged-in user
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Access"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+
+  /access/{key}:
+    parameters:
+      - name: key
+        in: path
+        required: true
+        type: string
+    put:
+      description: |
+        Add access to logged-in user
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/Access"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+
+  /accessGroups:
+    get:
+      description: |
+        Gets all access groups of your organization.
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/AccessGroup"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    post:
+      description: |
+        Creates a new access group.
+      parameters:
+        - name: accessGroup
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AccessGroup'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/AccessGroup"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+        
+  /accessGroups/{accessGroupId}:
+    parameters:
+        - name: accessGroupId
+          in: path
+          required: true
+          type: string
+    get:
+      description: |
+        Gets access group by id
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/AccessGroup"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    put:
+      description: |
+        Updates access group
+      parameters:
+        - name: accessGroup
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AccessGroup'
+      responses:
+        200:
+          description: Updated
+          schema:
+            $ref: "#/definitions/AccessGroup"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    delete:
+      description: |
+        deletes access group
+      responses:
+        204:
+          description: Deleted. No Content.
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+
+  /accessKeys:
+    get:
+      description: |
+        Gets all access keys of your organization.
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/AccessKey"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    post:
+      description: |
+        Creates a new access key.
+      parameters:
+        - name: accessGroup
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AccessKey'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/AccessKey"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+        
+  /accessKeys/{accessKeyId}:
+    parameters:
+        - name: accessKeyId
+          in: path
+          required: true
+          type: string
+    get:
+      description: |
+        Gets access key by id
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/AccessKey"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    put:
+      description: |
+        Updates access key
+      parameters:
+        - name: accessGroup
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AccessKey'
+      responses:
+        200:
+          description: Updated
+          schema:
+            $ref: "#/definitions/AccessKey"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    delete:
+      description: |
+        deletes access key
+      responses:
+        204:
+          description: Deleted. No Content.
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+        
+  /applications:
+    get:
+      description: |
+        Gets all applications of your organization.
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Application"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    post:
+      description: |
+        Creates a new application.
+        !! The API key cannot be set !!
+      parameters:
+        - name: application
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Application'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/Application"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+      
+  /applications/{applicationId}:
+    parameters:
+      - name: applicationId
+        in: path
+        required: true
+        type: string
+    get:
+      description: |
+        Gets Application object by ID.
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/Application"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    put:
+      description: |
+        Updates Application.
+        !! The API key cannot be set !!
+      parameters:
+        - name: application
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Application'
+      responses:
+        200:
+          description: Updated
+          schema:
+            $ref: "#/definitions/Application"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    delete:
+      description: |
+        deletes application
+      responses:
+        204:
+          description: Deleted. No Content.
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+  
+  /auth/signin:
+    post:
+      description: |
+        Login using user credentials. A cookie is set keping the user logged in for the session.
+      parameters:
+        - name: credentials
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email: 
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/User"
+  
+  /auth/signout:
+    get:
+      description: |
+        Log out
+      responses:
+        200:
+          description: redirect to /
+        
+  /beacons:
+    get:
+      description: |
+        Gets all Beacons accessible based on users credentials.
+        Use filtering to limit the search to a given region, floor or type.
+      parameters:
+        - name: organizationId
+          in: query
+          required: false
+          type: string
+        - name: venueId
+          in: query
+          required: false
+          type: string
+          description: filters by venue id
+        - name: alias
+          in: query
+          required: false
+          type: string
+          description: filters by alias (alias is unique per venue)
+        - name: floor
+          in: query
+          required: false
+          type: integer
+          description: filter by floor
+        - name: latitudeMin
+          in: query
+          required: false
+          type: number
+          description: filters out all beacons that are not in the specified area (use with latitudeMax)
+        - name: latitudeMax
+          in: query
+          required: false
+          type: number
+          description: filters out all beacons that are not in the specified area (use with latitudeMin)
+        - name: longitudeMin
+          in: query
+          required: false
+          type: number
+          description: filters out all beacons that are not in the specified area (use with longitudeMax)
+        - name: longitudeMax
+          in: query
+          required: false
+          type: number
+          description: filters out all beacons that are not in the specified area (use with longitudeMin)
+        - name: payload
+          in: query
+          required: false
+          type: string
+          description: filters by payload
+        - name: type
+          in: query
+          required: false
+          type: string
+          description: filter by type
+        - name: isPublished
+          in: query
+          required: false
+          type: string
+          description: Set to 'true' to return only published beacons in published venue. Set to 'false' to return unpublished beacons or published beacons in unpublished venues of your organization. Set to 'all' to return all beacons.
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Beacon"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    post:
+      description: |
+        Create a new Beacon
+      parameters:
+        - name: beacon
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Beacon'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/Beacon"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+      
+  /beacons/{beaconId}:
+    parameters:
+        - name: beaconId
+          in: path
+          required: true
+          type: string
+    get:
+      description: |
+        Gets Beacon by ID
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/Beacon"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    put:
+      description: |
+        Updates Beacon
+      parameters:
+        - name: beacon
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Beacon'
+      responses:
+        200:
+          description: Updated
+          schema:
+            $ref: "#/definitions/Beacon"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    delete:
+      description: |
+        deletes Beacon
+      responses:
+        204:
+          description: Deleted. No Content.
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+  
+  /directions:
+    post:
+      description: |
+        Ask for direction between two places
+      parameters:
+        - name: param
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              from:
+                $ref: '#/definitions/Place'
+              to:
+                $ref: '#/definitions/Place'
+      responses:
+        201:
+          description: Direction found
+          schema:
+            $ref: "#/definitions/Layer"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+   
+  /layers:
+    get:
+      description: |
+        Gets all layers accessible based on users credentials.
+        Use filtering to limit the search to a given region or zoom.
+      parameters:
+        - name: organizationId
+          in: query
+          required: false
+          type: string
+        - name: venueId
+          in: query
+          required: false
+          type: string
+          description: filters by venue
+        - name: zoom
+          in: query
+          required: false
+          type: integer
+          description: returns only the layers visible at the provided zoom level.
+        - name: latitudeMin
+          in: query
+          required: false
+          type: number
+          description: filters out all layers that are not in the specified area (use with latitudeMax)
+        - name: latitudeMax
+          in: query
+          required: false
+          type: number
+          description: filters out all layers that are not in the specified area (use with latitudeMin)
+        - name: longitudeMin
+          in: query
+          required: false
+          type: number
+          description: filters out all layers that are not in the specified area (use with longitudeMax)
+        - name: longitudeMax
+          in: query
+          required: false
+          type: number
+          description: filters out all layers that are not in the specified area (use with longitudeMin)
+        - name: isPublished
+          in: query
+          required: false
+          type: string
+          description: Set to 'true' to return only published layers in published venue. Set to 'false' to return unpublished layers or published layers in unpublished venues of your organization. Set to 'all' to return all layers.
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Layer"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    post:
+      description: |
+        Creates a new layer.
+        !!! Need to specify the owner !!!
+      parameters:
+        - name: layer
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Layer'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/Layer"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+      
+  /layers/{layerId}:
+    parameters:
+        - name: layerId
+          in: path
+          required: true
+          type: string
+    get:
+      description: |
+        Gets layer by ID
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/Layer"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    put:
+      description: |
+        Updates Layer
+      parameters:
+        - name: layer
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Layer'
+      responses:
+        200:
+          description: Updated
+          schema:
+            $ref: "#/definitions/Layer"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    delete:
+      description: |
+        deletes layer
+      responses:
+        204:
+          description: Deleted. No Content.
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+  
+  /layers/{layerId}/mbtiles:
+    parameters:
+      - name: layerId
+        in: path
+        required: true
+        type: string
+    post:
+      description: |
+        Uploads a MBTiles file for the layer
+      parameters:
+        - name: mbtilesFile
+          in: body
+          schema:
+            type: string
+      responses:
+        204:
+          description: Successful response - No content
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+  
+  /layers/{layerId}/image:
+    parameters:
+      - name: layerId
+        in: path
+        required: true
+        type: string
+    post:
+      description: |
+        Uploads a PNG image file to be imported for the layer
+      parameters:
+        - name: imageFile
+          in: body
+          schema:
+            type: string
+      responses:
+        204:
+          description: Successful response - No content
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+  
+  /places:
+    get:
+      description: |
+        Gets all places accessible based on users credentials.
+        The placeType is populated in all the places.
+        The venue is populated in all the places.
+      parameters:
+        - name: organizationId
+          in: query
+          required: false
+          type: string
+        - name: venueId
+          in: query
+          required: false
+          type: string
+          description: filters by venue
+        - name: alias
+          in: query
+          required: false
+          type: string
+          description: filters by alias
+        - name: zoom
+          in: query
+          required: false
+          type: integer
+          description: filter by zoom level
+        - name: floor
+          in: query
+          required: false
+          type: integer
+          description: filter by floor
+        - name: name
+          in: query
+          required: false
+          type: string
+          description: filters by name
+        - name: latitudeMin
+          in: query
+          required: false
+          type: number
+          description: filters out all places that are not in the specified area (use with latitudeMax)
+        - name: latitudeMax
+          in: query
+          required: false
+          type: number
+          description: filters out all places that are not in the specified area (use with latitudeMin)
+        - name: longitudeMin
+          in: query
+          required: false
+          type: number
+          description: filters out all places that are not in the specified area (use with longitudeMax)
+        - name: longitudeMax
+          in: query
+          required: false
+          type: number
+          description: filters out all places that are not in the specified area (use with longitudeMin)
+        - name: isPublished
+          in: query
+          required: false
+          type: string
+          description: Set to 'true' to return only published places in published venue. Set to 'false' to return unpublished places or published places in unpublished venues of your organization. Set to 'all' to return all places.
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Place"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    post:
+      description: |
+        Create a new Place. The owner is set based on the logged in user.
+      parameters:
+        - name: place
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Place'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/Place"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+  
+  /places/search:
+    post:
+      description: |
+        Search places
+      parameters:
+        - name: param
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              query:
+                type: string
+              queryParams:
+                type: object
+                properties:
+                  aroundLatLng:
+                    type: string
+                    description: Search around lat,lng
+      responses:
+        200:
+          description: Places found
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Place"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+      
+  /places/{placeId}:
+    parameters:
+      - name: placeId
+        in: path
+        required: true
+        type: string
+    get:
+      description: |
+        Gets the place by ID
+        The placeType is populated
+        The venue is populated
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/Place"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    put:
+      description: |
+        Updates the place
+      parameters:
+        - name: place
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Place'
+      responses:
+        200:
+          description: Updated
+          schema:
+            $ref: "#/definitions/Place"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    delete:
+      description: |
+        Deletes the place
+      responses:
+        204:
+          description: Deleted. No Content.
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+        
+  /routegraphs:
+    get:
+      description: |
+        Gets all graphs accessible based on users credentials.
+      parameters:
+        - name: organizationId
+          in: query
+          required: false
+          type: string
+        - name: venueId
+          in: query
+          required: false
+          type: string
+          description: filters by venue
+        - name: floor
+          in: query
+          required: false
+          type: integer
+          description: filter by floor
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/routeGraph"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    post:
+      description: |
+        Create a new Route graph
+      parameters:
+        - name: routeGraph
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/routeGraph'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/routeGraph"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+      
+  /routegraphs/{routegraphId}:
+    parameters:
+        - name: routegraphId
+          in: path
+          required: true
+          type: string
+    get:
+      description: |
+        Gets Route graph by ID
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/routeGraph"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    put:
+      description: |
+        Updates Route graph
+      parameters:
+        - name: beacon
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/routeGraph'
+      responses:
+        200:
+          description: Updated
+          schema:
+            $ref: "#/definitions/routeGraph"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    delete:
+      description: |
+        deletes Route graph
+      responses:
+        204:
+          description: Deleted. No Content.
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+        
+  /venues:
+    get:
+      description: |
+        Gets all Venues accessible based on users credentials.
+        Use filtering to limit the search to a given region.
+      parameters:
+        - name: organizationId
+          in: query
+          required: false
+          type: string
+        - name: latitudeMin
+          in: query
+          required: false
+          type: number
+          description: filter by region
+        - name: latitudeMax
+          in: query
+          required: false
+          type: number
+          description:  filter by region
+        - name: longitudeMin
+          in: query
+          required: false
+          type: number
+          description:  filter by region
+        - name: longitudeMax
+          in: query
+          required: false
+          type: number
+          description:  filter by region
+        - name: isPublished
+          in: query
+          required: false
+          type: string
+          description: Set to 'true' to return only published venues. Set to 'false' to return unpublished venues of your organization. Set to 'all' to return all venues.
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Venue"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    post:
+      description: |
+        Create a new Venue
+      parameters:
+        - name: venue
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Venue'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/Venue"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+      
+  /venues/{venueId}:
+    parameters:
+        - name: venueId
+          in: path
+          required: true
+          type: string
+    get:
+      description: |
+        Gets Venue by ID
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/Venue"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    put:
+      description: |
+        Updates Venue
+      parameters:
+        - name: venue
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Venue'
+      responses:
+        200:
+          description: Updated
+          schema:
+            $ref: "#/definitions/Venue"
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+    delete:
+      description: |
+        deletes Venue
+      responses:
+        204:
+          description: Deleted. No Content.
+      security: 
+        - OrganizationUserLogin: []
+        - ApplicationApiKey: []
+  
+definitions:
+  User:
+    type: object
+    required:
+      - email
+    properties:
+      _id:
+        type: string
+        readOnly: true
+      email:
+        type: string
+  
+  BaseObject:
+    type: object
+    properties:
+      _id:
+        type: string
+        readOnly: true
+      created:
+        type: string
+        format: date-time
+        readOnly: true
+      updated:
+        type: string
+        format: date-time
+        readOnly: true
+
+  OwnedObject:
+    allOf:
+      - $ref: '#/definitions/BaseObject'
+      - type: object
+        properties:
+          owner:
+            type: string
+        required:
+          - owner      
+
+  InVenueObject:
+    type: object
+    properties:
+      venueId:
+        type: string
+      venue:
+        $ref: '#/definitions/Venue'
+        
+  RestrictedAccessObject:
+    type: object
+    properties:
+      accessGroups:
+        $ref: '#/definitions/AccessGroup'
+  
+  Organization:
+    allOf:
+      - $ref: '#/definitions/BaseObject'
+      - type: object
+        properties:
+          users:
+            type: array
+            items: 
+              $ref: '#/definitions/User'
+
+  AccessGroup:
+    allOf:
+      - $ref: '#/definitions/OwnedObject'
+      - type: object
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+  
+  AccessKey:
+    allOf:
+      - $ref: '#/definitions/OwnedObject'
+      - type: object
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+          key:
+            type: string
+          access:
+            type: object
+            properties:
+              group:
+                type: string
+              expires:
+                type: string
+                format: date-time
+              duration:
+                type: number
+              
+  Application:
+    allOf:
+      - $ref: '#/definitions/OwnedObject'
+      - type: object
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+          apiKey:
+            type: string
+            readOnly: true
+
+  Beacon:
+    allOf:
+      - $ref: '#/definitions/OwnedObject'
+      - $ref: '#/definitions/InVenueObject'
+      - type: object
+        required:
+          - name
+          - type
+          - location
+          - properties
+          - alias
+        properties:
+          name:
+            type: string
+          alias:
+            type: string
+          description:
+            type: string
+          type:
+            type: string
+            enum:
+              - ibeacon
+              - qrcode
+          location:
+            type: object
+            properties:
+              lon:
+                type: number
+              lat:
+                type: number
+          floor:
+            type: number
+          isPublished:
+            type: boolean
+          properties:
+            type: object
+            description: properties are defined based on the type. See the properties schema below.
+  
+  Layer:
+    allOf:
+      - $ref: '#/definitions/OwnedObject'
+      - $ref: '#/definitions/InVenueObject'
+      - type: object
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+          floor:
+            type: integer
+          hash:
+            type: string
+          isPublished:
+            type: boolean
+          importJob:
+            type: object
+          tilesUrlTemplate:
+            type: string
+          latitudeMin:
+            type: number
+            readOnly: true
+          latitudeMax:
+            type: number
+            readOnly: true
+          longitudeMin:
+            type: number
+            readOnly: true
+          longitudeMax:
+            type: number
+            readOnly: true
+          zoomMin:
+            type: integer
+            readOnly: true
+          zoomMax:
+            type: integer
+            readOnly: true
+  
+  PlaceType:
+    allOf:
+      - $ref: '#/definitions/BaseObject'
+      - type: object
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+          translations:
+            type: array
+            items:
+              type: object
+              properties:
+                title:  
+                  type: string
+                  description: the title displayed on the map for specified language
+                details:
+                  type: string
+                  description: the details displayed on the map for specified language
+                language:
+                  type: string
+                  description: "the language of the related text, as 2 letter abreviation http://docs.mongodb.org/manual/reference/text-search-languages/ Example: en"
+          tags:
+            description: "an array of tags given to the place type. Example: ['security', 'medical']"
+            type: array
+            items:  
+              type: string
+          priority:
+            type: number
+            description: "The priority for displaying such place. The larger the number the higher the priority. When queried, places are returned by decreasing priority. at small zoom levels, only the places with the highest priority will be displayed. For example, this could mean that only the museum is shown at zoom level 10 and that the pieces of art are only shown at zoom level 18"
+          zoomMin:
+            type: integer
+          zoomMax:
+            type: integer
+          style:
+            type: object
+            properties:
+              markerUrl:
+                type: string
+                description: "The url where to find the marker. If this value is provided, the marker-color and marker-symbol properties are ignored."
+              markerColor:
+                type: string
+                description: "Not in V1. If provided, the marker is generated on the fly using the template. Hex string. Must follow color rules. Example: #FF0000 for red"
+              markerSymbol:
+                type: string
+                description: "Not in V1. If provided, the marker is generated on the fly using the template. The symbol name to add in the center of the marker"
+              strokeColor:
+                type: string
+                description: "the color of a line as part of a polygon, polyline, circle. Hex string. Must follow color rules. Example: #FF0000 for red"
+              strokeOpacity:
+                type: number
+                description: "the opacity of the line component of a polygon, polyline, circle. value must be a floating point number greater than or equal to zero and less or equal to than one"
+              strokeWidth:
+                type: number
+                description: "the width of the line component of a polygon, polyline, circle. Value must be a floating point number greater than or equal to 0"
+              fillColor:
+                type: string
+                description: "the color of the interior of a polygon. Hex string. Must follow color rules. Example: #FF0000 for red"
+              fillOpacity:
+                type: number
+                description: "the opacity of the interior of a polygon. value must be a floating point number greater than or equal to zero and less or equal to than one."
+
+  Place:
+    allOf:
+      - $ref: '#/definitions/OwnedObject'
+      - $ref: '#/definitions/InVenueObject'
+      - type: object
+        required:
+          - name
+          - alias
+          - geometry
+          - placeTypeId
+        properties:
+          name:
+            type: string
+          alias:
+            type: string
+          description:
+            type: string
+          translations:
+            type: array
+            items:
+              type: object
+              properties:
+                title:  
+                  type: string
+                  description: the title displayed on the map for specified language
+                details:
+                  type: string
+                  description: the details displayed on the map for specified language
+                language:
+                  type: string
+                  description: "the language of the related text, as 2 letter abreviation http://docs.mongodb.org/manual/reference/text-search-languages/ Example: en"
+          url:
+            type: string
+            description: the url to which the content links to
+          floor:
+            type: number
+            description: "the floor where the place is. If not set, it is assumed null."
+          zoomMin:
+            type: number
+          zoomMax:
+            type: number
+          latitudeMin:
+            type: number
+          longitudeMin:
+            type: number
+          latitudeMax:
+            type: number
+          longitudeMax:
+            type: number
+          geometry:
+            type: object
+            description: Follows the standards defined by GeoJSon and ElasticSearch.
+            properties:
+              type:
+                type: string
+                enum:
+                  - Point
+                  - LineString
+                  - Polygon
+                  - Circle
+                  - MultiPoint
+                  - MultiLineString
+                  - MultiPolygon
+              coordinates:
+                type: object
+                description: Follows the standards defined by GeoJSon and ElasticSearch.
+              radius:
+                description: Only for circles, in meters. Follows the standard defined by ElasticSearch.
+                type: number
+          placeTypeId:
+            $ref: '#/definitions/PlaceType'
+            description: ID of the related placeType object
+          placeType:
+            type: object
+          tags:
+            description: "an array of tags given to the place. Example: ['security', 'medical']"
+            type: array
+            items:  
+              type: string
+          data:
+            type: object
+            description: "free data that can be added by the user"
+
+  routeGraph:
+    allOf:
+      - $ref: '#/definitions/OwnedObject'
+      - $ref: '#/definitions/InVenueObject'
+      - type: object
+        properties:
+          floor:
+            type: number
+          nodes:
+            type: array
+            items:
+              type: object
+              properties:
+                id:  
+                  type: number
+                  description: the unique id of the node
+                lat:
+                  type: number
+                lon:
+                  type: number
+                isGateway:
+                  type: boolean
+                connector:
+                  type: string
+          routes:
+            type: array
+            description: array of linked nodes
+            items:
+              type: object
+              properties:
+                from:  
+                  type: number
+                  description: id of start node
+                to:
+                  type: number
+                  description: id of end node
+
+  Venue:
+    allOf:
+      - $ref: '#/definitions/OwnedObject'
+      - $ref: '#/definitions/RestrictedAccessObject'
+      - type: object
+        required:
+          - name
+          - alias
+          - geometry
+          - defaultLanguage
+        properties:
+          name:
+            type: string
+          alias:
+            type: string
+          description:
+            type: string
+          connectors:
+            type: array
+            items:
+              type: object
+              properties:
+                name:  
+                  type: string
+                type:
+                  type: string
+                  enum:
+                    - STAIRS
+                    - ELEVATOR
+                    - ESCALATOR
+                    - RAMP
+                direction:
+                  type: string
+                  enum:
+                    - UP
+                    - DOWN
+                    - BOTH
+          defaultLanguage:
+            type: string
+          translations:
+            type: array
+            items:
+              type: object
+              properties:
+                title:  
+                  type: string
+                  description: the title displayed on the map for specified language
+                details:
+                  type: string
+                  description: the details displayed on the map for specified language
+                language:
+                  type: string
+                  description: "the language of the related text, as 2 letter abreviation http://docs.mongodb.org/manual/reference/text-search-languages/ Example: en"
+          latitudeMin:
+            type: number
+          longitudeMin:
+            type: number
+          latitudeMax:
+            type: number
+          longitudeMax:
+            type: number
+          geometry:
+            type: object
+            description: Follows the standards defined by GeoJSon and ElasticSearch.
+            properties:
+              type:
+                type: string
+                enum:
+                  - Point
+                  - LineString
+                  - Polygon
+                  - Circle
+                  - MultiPoint
+                  - MultiLineString
+                  - MultiPolygon
+              coordinates:
+                type: object
+                description: Follows the standards defined by GeoJSon and ElasticSearch.
+              radius:
+                description: Only for circles, in meters. Follows the standard defined by ElasticSearch.
+                type: number
+          isPublished:
+            type: boolean
+
+  IBeaconProperties:
+    type: object
+    properties:
+      uuid:
+        type: string
+      major:
+        type: integer
+      minor:
+        type: integer
+      txPower:
+        type: number
+  
+  QRCodeProperties:
+    type: object
+    properties:
+      data:
+        type: string
+        description: the data encoded in the QR Code
+      
+  IBeaconUUIDs:
+    type: array
+    items:
+      type: object
+      properties:
+        uuid:
+          type: string
+        alias:
+          type: string
+          
+  Access:
+    type: object
+    properties:
+      group:
+        type: string
+      expires:
+        type: string
+                         
+securityDefinitions:
+  # The user must be logged in and be linked to the organization owning the resource
+  OrganizationUserLogin:
+    type: basic
+    
+  ApplicationApiKey:
+    type: apiKey
+    in: query
+    name: api_key
+
+    

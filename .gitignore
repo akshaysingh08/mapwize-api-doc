@@ -1,0 +1,13 @@
+.DS_Store
+.nodemonignore
+.sass-cache/
+npm-debug.log
+node_modules/
+public/lib
+tests/coverage/
+.bower-*/
+.idea/
+dump.rdb
+newrelic_agent.log
+.env
+tmp
