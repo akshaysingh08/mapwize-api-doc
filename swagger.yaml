@@ -448,13 +448,35 @@ paths:
         - name: param
           in: body
           required: true
+          description: |
+            from and to need placeId OR lat/lon/floor OR placeListId (in case of to)
           schema:
             type: object
             properties:
               from:
-                $ref: '#/definitions/Place'
+                type: object
+                properties:
+                  placeId: 
+                    type: string
+                  lat:
+                    type: number
+                  lon:
+                    type: number
+                  floor:
+                    type: number
               to:
-                $ref: '#/definitions/Place'
+                type: object
+                properties:
+                  placeId: 
+                    type: string
+                  lat:
+                    type: number
+                  lon:
+                    type: number
+                  floor:
+                    type: number
+                  placeListId:
+                    type: string
       responses:
         201:
           description: Direction found
